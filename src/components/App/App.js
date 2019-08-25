@@ -38,7 +38,13 @@ const Hotel = ({
   </div>
 );
 
-export const ErrorUI = () => (
+const LoadingUI = () => (
+  <div>
+    <p>Getting your hotel information. Please wait...</p>
+  </div>
+);
+
+const ErrorUI = () => (
   <div>
     <p>
       Oh no! There seems to be a technical problem at the moment. Please try
@@ -47,7 +53,7 @@ export const ErrorUI = () => (
   </div>
 );
 
-export const NoResultsUI = () => (
+const NoResultsUI = () => (
   <div>
     <p>Dang! No results matched your query. Try broadening your search?</p>
   </div>
@@ -58,6 +64,7 @@ export default class App extends Component {
     apiReturnedError: false,
     hotelNameInput: '',
     hotels: [],
+    isLoading: true,
     sortOrder: sortOrders.RECOMMENDED,
   };
 
@@ -90,6 +97,9 @@ export default class App extends Component {
       })
       .catch(err => {
         this.setState({ apiReturnedError: true });
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
       });
   }
 
@@ -111,7 +121,7 @@ export default class App extends Component {
       onChangeSortOrder,
       onClickReset,
       hotelsToDisplay,
-      state: { apiReturnedError, sortOrder, hotelNameInput },
+      state: { apiReturnedError, sortOrder, hotelNameInput, isLoading },
     } = this;
 
     return (
@@ -144,7 +154,9 @@ export default class App extends Component {
             </div>
           </div>
 
-          {apiReturnedError ? (
+          {isLoading ? (
+            <LoadingUI />
+          ) : apiReturnedError ? (
             <ErrorUI />
           ) : hotelsToDisplay.length ? (
             <div className="hotel-list">

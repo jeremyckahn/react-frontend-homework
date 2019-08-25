@@ -113,6 +113,19 @@ describe('App', () => {
       expect(hotelsToDisplay[0].hotelStaticContent.name).toEqual('foo');
     });
 
+    describe('data has not loaded', () => {
+      test('displays loading UI', () => {
+        expect(wrapper.find('LoadingUI')).toHaveLength(1);
+      });
+    });
+
+    describe('data has loaded', () => {
+      test('hides loading UI', () => {
+        wrapper.setState({ isLoading: false });
+        expect(wrapper.find('LoadingUI')).toHaveLength(0);
+      });
+    });
+
     describe('no matching results', () => {
       test('displays no results UI', () => {
         const hotels = [
@@ -123,6 +136,7 @@ describe('App', () => {
         wrapper.setState({
           hotels,
           hotelNameInput: 'non-matching string',
+          isLoading: false,
         });
 
         expect(wrapper.find('NoResultsUI')).toHaveLength(1);
@@ -174,7 +188,7 @@ describe('App', () => {
       expect(wrapper.state()).toMatchObject({
         hotelNameInput: '',
         sortOrder: sortOrders.RECOMMENDED,
-      })
+      });
     });
   });
 });
