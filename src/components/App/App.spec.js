@@ -2,12 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import App, { sortOrders } from './App';
 
-import { successResponse } from '../../../test/fixtures/rates-200';
-
-const mockHotel = ({ name = '', id }) => ({
+const mockHotel = ({ name = '', price = 0, id }) => ({
   id,
   hotelStaticContent: {
     name,
+  },
+  lowestAveragePrice: {
+    amount: price,
   },
 });
 
@@ -109,6 +110,38 @@ describe('App', () => {
       const Hotels = wrapper.find('Hotel');
       expect(Hotels).toHaveLength(1);
       expect(Hotels.at(0).props().hotel.hotelStaticContent.name).toEqual('foo');
+    });
+
+    describe('sorting', () => {
+      beforeEach(() => {
+        const hotels = [
+          mockHotel({ id: '0', name: 'average', price: 200 }),
+          mockHotel({ id: '1', name: 'high', price: 300 }),
+          mockHotel({ id: '2', name: 'low', price: 100 }),
+        ];
+
+        wrapper.setState({
+          hotels,
+        });
+      });
+
+      test('sorts from low to high', () => {
+        wrapper.setState({ sortOrder: sortOrders.ASCENDING });
+        expect(
+          wrapper
+            .instance()
+            .hotelsToDisplay.map(({ lowestAveragePrice: { amount } }) => amount)
+        ).toEqual([100, 200, 300]);
+      });
+
+      test('sorts from high to low', () => {
+        wrapper.setState({ sortOrder: sortOrders.DESCENDING });
+        expect(
+          wrapper
+            .instance()
+            .hotelsToDisplay.map(({ lowestAveragePrice: { amount } }) => amount)
+        ).toEqual([300, 200, 100]);
+      });
     });
   });
 });

@@ -55,13 +55,25 @@ export default class App extends Component {
     sortOrder: sortOrders.RECOMMENDED,
   };
 
-  get matchingHotels() {
-    const { hotelNameInput, hotels } = this.state;
+  get hotelsToDisplay() {
+    const { hotelNameInput, hotels, sortOrder } = this.state;
 
     const hotelNameRegExp = new RegExp(hotelNameInput.trim() || '.*', 'i');
-    return hotels.filter(({ hotelStaticContent: { name } }) =>
+    const filteredHotels = hotels.filter(({ hotelStaticContent: { name } }) =>
       name.match(hotelNameRegExp)
     );
+
+    if (sortOrder === sortOrders.RECOMMENDED) {
+      return filteredHotels;
+    }
+
+    return filteredHotels.sort((a, b) => {
+      if (sortOrder === sortOrders.ASCENDING) {
+        return a.lowestAveragePrice.amount - b.lowestAveragePrice.amount;
+      } else if (sortOrder === sortOrders.DESCENDING) {
+        return b.lowestAveragePrice.amount - a.lowestAveragePrice.amount;
+      }
+    });
   }
 
   componentDidMount() {
@@ -87,7 +99,7 @@ export default class App extends Component {
     const {
       onChangeHotelNameInput,
       onChangeSortOrder,
-      matchingHotels,
+      hotelsToDisplay,
       state: { apiReturnedError, hotelNameInput },
     } = this;
 
@@ -118,7 +130,7 @@ export default class App extends Component {
             <ErrorUI />
           ) : (
             <div className="hotel-list">
-              {matchingHotels.map(hotel => (
+              {hotelsToDisplay.map(hotel => (
                 <Hotel {...{ hotel, key: hotel.id }} />
               ))}
             </div>
