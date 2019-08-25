@@ -79,4 +79,4 @@ module.exports=require("./lib/axios");
 },{"./App":"SoJR"}],"Focm":[function(require,module,exports) {
 "use strict";var e=u(require("react")),r=require("react-dom"),t=u(require("./components/App"));function u(e){return e&&e.__esModule?e:{default:e}}require("./styles/style.scss"),(0,r.render)(e.default.createElement(t.default,null),document.querySelector("#app"));
 },{"react":"1n8/","react-dom":"NKHc","./components/App":"L+lk","./styles/style.scss":"4fs1"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.3a1459e6.js.map
+//# sourceMappingURL=src.3a1459e6.js.map
