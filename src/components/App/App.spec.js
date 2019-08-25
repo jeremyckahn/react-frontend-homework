@@ -4,6 +4,13 @@ import App from './App';
 
 import { successResponse } from '../../../test/fixtures/rates-200';
 
+const mockHotel = ({ name = '', id }) => ({
+  id,
+  hotelStaticContent: {
+    name,
+  },
+});
+
 describe('App', () => {
   let wrapper;
 
@@ -47,7 +54,11 @@ describe('App', () => {
             success: true,
             results: {
               total: 3,
-              hotels: [{ id: '0' }, { id: '1' }, { id: '2' }],
+              hotels: [
+                mockHotel({ id: '0' }),
+                mockHotel({ id: '1' }),
+                mockHotel({ id: '2' }),
+              ],
             },
           }),
       }));
@@ -64,16 +75,30 @@ describe('App', () => {
   });
 
   describe('filtering', () => {
-    describe('name filtering', () => {
-      test('entering a hotel name', () => {
-        wrapper
-          .instance()
-          .onChangeHotelNameInput({ target: { value: 'a nice hotel' } });
+    test('captures hotel name input', () => {
+      wrapper
+        .instance()
+        .onChangeHotelNameInput({ target: { value: 'a nice hotel' } });
 
-        expect(wrapper.state()).toMatchObject({
-          hotelNameInput: 'a nice hotel',
-        });
+      expect(wrapper.state()).toMatchObject({
+        hotelNameInput: 'a nice hotel',
       });
+    });
+
+    test('only renders matching hotels', () => {
+      const hotels = [
+        mockHotel({ id: '0', name: 'foo' }),
+        mockHotel({ id: '1', name: 'bar' }),
+      ];
+
+      wrapper.setState({
+        hotels,
+        hotelNameInput: '  oo  ',
+      });
+
+      const Hotels = wrapper.find('Hotel');
+      expect(Hotels).toHaveLength(1);
+      expect(Hotels.at(0).props().hotel.hotelStaticContent.name).toEqual('foo');
     });
   });
 });

@@ -48,6 +48,15 @@ export default class App extends Component {
     hotels: [],
   };
 
+  get matchingHotels() {
+    const { hotelNameInput, hotels } = this.state;
+
+    const hotelNameRegExp = new RegExp(hotelNameInput.trim() || '.*', 'i');
+    return hotels.filter(({ hotelStaticContent: { name } }) =>
+      name.match(hotelNameRegExp)
+    );
+  }
+
   componentDidMount() {
     hotelResultService
       .get()
@@ -66,7 +75,8 @@ export default class App extends Component {
   render() {
     const {
       onChangeHotelNameInput,
-      state: { apiReturnedError, hotelNameInput, hotels },
+      matchingHotels,
+      state: { apiReturnedError, hotelNameInput },
     } = this;
 
     return (
@@ -96,7 +106,7 @@ export default class App extends Component {
             <ErrorUI />
           ) : (
             <div className="hotel-list">
-              {hotels.map(hotel => (
+              {matchingHotels.map(hotel => (
                 <Hotel {...{ hotel, key: hotel.id }} />
               ))}
             </div>
