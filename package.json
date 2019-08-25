@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build src/index.html",
-    "deploy": "npm run build && gh-pages -d dist",
+    "deploy": "parcel build src/index.html --public-url ./ && gh-pages -d dist",
     "prettier": "prettier '{src,test}/**/*.js' --write",
     "start": "parcel src/index.html",
     "test": "jest"
