@@ -62,4 +62,18 @@ describe('App', () => {
       });
     });
   });
+
+  describe('filtering', () => {
+    describe('name filtering', () => {
+      test('entering a hotel name', () => {
+        wrapper
+          .instance()
+          .onChangeHotelNameInput({ target: { value: 'a nice hotel' } });
+
+        expect(wrapper.state()).toMatchObject({
+          hotelNameInput: 'a nice hotel',
+        });
+      });
+    });
+  });
 });

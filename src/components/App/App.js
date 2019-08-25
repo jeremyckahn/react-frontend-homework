@@ -44,6 +44,7 @@ export const ErrorUI = () => (
 export default class App extends Component {
   state = {
     apiReturnedError: false,
+    hotelNameInput: '',
     hotels: [],
   };
 
@@ -58,8 +59,15 @@ export default class App extends Component {
       });
   }
 
+  onChangeHotelNameInput = ({ target: { value: hotelNameInput } }) => {
+    this.setState({ hotelNameInput });
+  };
+
   render() {
-    const { apiReturnedError, hotels } = this.state;
+    const {
+      onChangeHotelNameInput,
+      state: { apiReturnedError, hotelNameInput, hotels },
+    } = this;
 
     return (
       <div className="app-container">
@@ -67,7 +75,13 @@ export default class App extends Component {
           <div>
             <div className="filters">
               Hotel name
-              <input type="text" className="input" maxLength={1} />
+              <input
+                type="text"
+                className="input"
+                onChange={this.onChangeHotelNameInput}
+                maxLength={50}
+                value={hotelNameInput}
+              />
               Price
               <select name="" className="select">
                 <option value="">Recommended</option>
