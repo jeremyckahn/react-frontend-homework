@@ -3,7 +3,13 @@ import './App.style.scss';
 
 import hotelResultService from '../../services/hotel-result/hotel-result.service';
 
-export const Hotel = ({
+export const sortOrders = {
+  RECOMMENDED: 'recommended',
+  ASCENDING: 'ascending',
+  DESCENDING: 'descending',
+};
+
+const Hotel = ({
   hotel: { id, hotelStaticContent, lowestAveragePrice, rewards },
 }) => (
   <div className="hotel-card" key={id}>
@@ -46,6 +52,7 @@ export default class App extends Component {
     apiReturnedError: false,
     hotelNameInput: '',
     hotels: [],
+    sortOrder: sortOrders.RECOMMENDED,
   };
 
   get matchingHotels() {
@@ -72,9 +79,14 @@ export default class App extends Component {
     this.setState({ hotelNameInput });
   };
 
+  onChangeSortOrder = ({ target: { value: sortOrder } }) => {
+    this.setState({ sortOrder });
+  };
+
   render() {
     const {
       onChangeHotelNameInput,
+      onChangeSortOrder,
       matchingHotels,
       state: { apiReturnedError, hotelNameInput },
     } = this;
@@ -93,10 +105,10 @@ export default class App extends Component {
                 value={hotelNameInput}
               />
               Price
-              <select name="" className="select">
-                <option value="">Recommended</option>
-                <option value="">Price low-to-high</option>
-                <option value="">Price high-to-low</option>
+              <select name="" className="select" onChange={onChangeSortOrder}>
+                <option value={sortOrders.RECOMMENDED}>Recommended</option>
+                <option value={sortOrders.ASCENDING}>Price low-to-high</option>
+                <option value={sortOrders.DESCENDING}>Price high-to-low</option>
               </select>
               <button className="button">Reset</button>
             </div>

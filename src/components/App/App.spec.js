@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './App';
+import App, { sortOrders } from './App';
 
 import { successResponse } from '../../../test/fixtures/rates-200';
 
@@ -82,6 +82,16 @@ describe('App', () => {
 
       expect(wrapper.state()).toMatchObject({
         hotelNameInput: 'a nice hotel',
+      });
+    });
+
+    test('captures sort order change', () => {
+      wrapper
+        .instance()
+        .onChangeSortOrder({ target: { value: sortOrders.DESCENDING } });
+
+      expect(wrapper.state()).toMatchObject({
+        sortOrder: sortOrders.DESCENDING,
       });
     });
 
