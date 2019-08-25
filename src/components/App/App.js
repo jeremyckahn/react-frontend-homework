@@ -3,7 +3,7 @@ import './App.style.scss';
 
 import hotelResultService from '../../services/hotel-result/hotel-result.service';
 
-const Hotel = ({
+export const Hotel = ({
   hotel: { id, hotelStaticContent, lowestAveragePrice, rewards },
 }) => (
   <div className="hotel-card" key={id}>
