@@ -32,20 +32,34 @@ export const Hotel = ({
   </div>
 );
 
+export const ErrorUI = () => (
+  <div>
+    <h1>
+      Oh no! There seems to be a techical problem at the moment. Please try
+      again in a bit!
+    </h1>
+  </div>
+);
+
 export default class App extends Component {
   state = {
+    apiReturnedError: false,
     hotels: [],
   };
 
   componentDidMount() {
-    hotelResultService.get().then(response => {
-      const { hotels } = response.results;
-      this.setState({ hotels });
-    });
+    hotelResultService
+      .get()
+      .then(response => {
+        this.setState({ hotels: response.results.hotels });
+      })
+      .catch(err => {
+        this.setState({ apiReturnedError: true });
+      });
   }
 
   render() {
-    const { hotels } = this.state;
+    const { apiReturnedError, hotels } = this.state;
 
     return (
       <div className="app-container">
@@ -64,11 +78,15 @@ export default class App extends Component {
             </div>
           </div>
 
-          <div className="hotel-list">
-            {hotels.map(hotel => (
-              <Hotel {...{ hotel, key: hotel.id }} />
-            ))}
-          </div>
+          {apiReturnedError ? (
+            <ErrorUI />
+          ) : (
+            <div className="hotel-list">
+              {hotels.map(hotel => (
+                <Hotel {...{ hotel, key: hotel.id }} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
