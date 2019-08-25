@@ -161,4 +161,20 @@ describe('App', () => {
       });
     });
   });
+
+  describe('resetting', () => {
+    test('clicking reset button resets UI', () => {
+      wrapper.setState({
+        hotelNameInput: 'some text',
+        sortOrder: sortOrders.DESCENDING,
+      });
+
+      wrapper.instance().onClickReset();
+
+      expect(wrapper.state()).toMatchObject({
+        hotelNameInput: '',
+        sortOrder: sortOrders.RECOMMENDED,
+      })
+    });
+  });
 });

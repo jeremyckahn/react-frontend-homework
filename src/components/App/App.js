@@ -101,12 +101,17 @@ export default class App extends Component {
     this.setState({ sortOrder });
   };
 
+  onClickReset = () => {
+    this.setState({ hotelNameInput: '', sortOrder: sortOrders.RECOMMENDED });
+  };
+
   render() {
     const {
       onChangeHotelNameInput,
       onChangeSortOrder,
+      onClickReset,
       hotelsToDisplay,
-      state: { apiReturnedError, hotelNameInput },
+      state: { apiReturnedError, sortOrder, hotelNameInput },
     } = this;
 
     return (
@@ -123,12 +128,19 @@ export default class App extends Component {
                 value={hotelNameInput}
               />
               Price
-              <select name="" className="select" onChange={onChangeSortOrder}>
+              <select
+                className="select"
+                name=""
+                onChange={onChangeSortOrder}
+                value={sortOrder}
+              >
                 <option value={sortOrders.RECOMMENDED}>Recommended</option>
                 <option value={sortOrders.ASCENDING}>Price low-to-high</option>
                 <option value={sortOrders.DESCENDING}>Price high-to-low</option>
               </select>
-              <button className="button">Reset</button>
+              <button className="button" onClick={onClickReset}>
+                Reset
+              </button>
             </div>
           </div>
 
