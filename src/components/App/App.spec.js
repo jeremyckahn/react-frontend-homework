@@ -113,6 +113,22 @@ describe('App', () => {
       expect(hotelsToDisplay[0].hotelStaticContent.name).toEqual('foo');
     });
 
+    describe('no matching results', () => {
+      test('displays no results UI', () => {
+        const hotels = [
+          mockHotel({ id: '0', name: 'foo' }),
+          mockHotel({ id: '1', name: 'bar' }),
+        ];
+
+        wrapper.setState({
+          hotels,
+          hotelNameInput: 'non-matching string',
+        });
+
+        expect(wrapper.find('NoResultsUI')).toHaveLength(1);
+      });
+    });
+
     describe('sorting', () => {
       beforeEach(() => {
         const hotels = [

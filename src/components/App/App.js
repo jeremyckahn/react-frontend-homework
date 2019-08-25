@@ -40,10 +40,16 @@ const Hotel = ({
 
 export const ErrorUI = () => (
   <div>
-    <h1>
-      Oh no! There seems to be a techical problem at the moment. Please try
+    <p>
+      Oh no! There seems to be a technical problem at the moment. Please try
       again in a bit!
-    </h1>
+    </p>
+  </div>
+);
+
+export const NoResultsUI = () => (
+  <div>
+    <p>Dang! No results matched your query. Try broadening your search?</p>
   </div>
 );
 
@@ -128,12 +134,14 @@ export default class App extends Component {
 
           {apiReturnedError ? (
             <ErrorUI />
-          ) : (
+          ) : hotelsToDisplay.length ? (
             <div className="hotel-list">
               {hotelsToDisplay.map(hotel => (
                 <Hotel {...{ hotel, key: hotel.id }} />
               ))}
             </div>
+          ) : (
+            <NoResultsUI />
           )}
         </div>
       </div>
