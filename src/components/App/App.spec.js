@@ -107,9 +107,10 @@ describe('App', () => {
         hotelNameInput: '  oo  ',
       });
 
-      const Hotels = wrapper.find('Hotel');
-      expect(Hotels).toHaveLength(1);
-      expect(Hotels.at(0).props().hotel.hotelStaticContent.name).toEqual('foo');
+      const { hotelsToDisplay } = wrapper.instance();
+
+      expect(hotelsToDisplay).toHaveLength(1);
+      expect(hotelsToDisplay[0].hotelStaticContent.name).toEqual('foo');
     });
 
     describe('sorting', () => {
