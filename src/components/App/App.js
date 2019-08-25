@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import './App.style.scss';
 
 import hotelResultService from '../../services/hotel-result/hotel-result.service';
@@ -32,40 +32,45 @@ const Hotel = ({
   </div>
 );
 
-const App = () => {
-  const [hotels, setHotels] = useState([]);
+export default class App extends Component {
+  state = {
+    hotels: [],
+  };
 
-  useEffect(() => {
+  componentDidMount() {
     hotelResultService.get().then(response => {
-      setHotels(response.results.hotels);
+      const { hotels } = response.results;
+      this.setState({ hotels });
     });
-  }, []);
+  }
 
-  return (
-    <div className="app-container">
-      <div className="content">
-        <div>
-          <div className="filters">
-            Hotel name
-            <input type="text" className="input" maxLength={1} />
-            Price
-            <select name="" className="select">
-              <option value="">Recommended</option>
-              <option value="">Price low-to-high</option>
-              <option value="">Price high-to-low</option>
-            </select>
-            <button className="button">Reset</button>
+  render() {
+    const { hotels } = this.state;
+
+    return (
+      <div className="app-container">
+        <div className="content">
+          <div>
+            <div className="filters">
+              Hotel name
+              <input type="text" className="input" maxLength={1} />
+              Price
+              <select name="" className="select">
+                <option value="">Recommended</option>
+                <option value="">Price low-to-high</option>
+                <option value="">Price high-to-low</option>
+              </select>
+              <button className="button">Reset</button>
+            </div>
+          </div>
+
+          <div className="hotel-list">
+            {hotels.map(hotel => (
+              <Hotel {...{ hotel, key: hotel.id }} />
+            ))}
           </div>
         </div>
-
-        <div className="hotel-list">
-          {hotels.map(hotel => (
-            <Hotel {...{ hotel, key: hotel.id }} />
-          ))}
-        </div>
       </div>
-    </div>
-  );
-};
-
-export default App;
+    );
+  }
+}
