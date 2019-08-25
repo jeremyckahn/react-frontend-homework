@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prettier": "prettier '{src,test}/**/*.js' --write",
     "start": "parcel src/index.html",
     "test": "jest"
   },
@@ -27,6 +28,7 @@
     "enzyme-adapter-react-16": "^1.11.0",
     "jest": "^24.5.0",
     "parcel-bundler": "^1.12.0",
+    "prettier": "^1.18.2",
     "sass": "^1.20.1"
   },
   "dependencies": {
